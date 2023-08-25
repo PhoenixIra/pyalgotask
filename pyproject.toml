@@ -1,0 +1,51 @@
+[project]
+name = "pyalgotask"
+version = "0.1.0"
+description = "Generates tasks for executing algorithms to better understand their innerworkings, as often used in algorithm classes."
+authors = [
+    {name = "Ira Fesefeldt", email="public@feuervogel.me"}
+]
+maintainers = [
+    {name = "Ira Fesefeldt", email="public@feuervogel.me"}
+]
+license = {file = "LICENSE.txt"}
+readme = "README.md"
+requires-python = ">=3.8"
+
+keywords = ["algorithm", "education", "tasks"]
+
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Private :: Do Not Upload", 
+    "Environment :: Console",
+    "Natural Language :: English",
+    "Topic :: Education :: Computer Aided Instruction (CAI)",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3 :: Only",
+]
+
+# Requirements: This is done differently by poetry!
+dependencies = [
+    "PyLaTeX",
+    "pyaml"
+]
+
+#[project.urls]
+#homepage = ""
+#documentation = ""
+#repository = ""
+
+[project.scripts]
+pyAlgoTask = "pyalgotask.__main__:main"
+
+[tool.pytask.ini_options]
+paths = "src/pyalgotask"
+pythonpath = "src"
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"

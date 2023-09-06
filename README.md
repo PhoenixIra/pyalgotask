@@ -57,8 +57,14 @@ Generally, for input the parameters `-i` are used for commandline input and `-f`
 
 Further customization is possible and explained in the help for each task.
 
+### Virtual Environment
+You may need to use a virtual environment to install pylatex. To do this, execute the following
+
+    python -m venv ./venv
+    source ./venv/bin/activate
+
 ## Project Structure
-This project is structured in five parts, the [Main part](#main-part), the [Tasks](#tasks), the [Inpud modules](#input), the [Randomizer modules](#randomizer) and the [Output modules](#output). Additionally, we use unittesting with [pytest](https://pytest.org/).
+This project is structured in five parts, the [Main part](#main-part), the [Tasks](#tasks), the [Input modules](#input), the [Randomizer modules](#randomizer) and the [Output modules](#output). Additionally, we use unittesting with [pytest](https://pytest.org/).
 
 ### Main part
 The main class `src/pyAlgoTask/__man__` deals with reading the parser and calling all other modules. This includes error handling, to call the exporter `src/pyAlgoTask/export` for file export and allowing all tasks to register themself using the module `src/pyAlgoTask/tasks/tasks.py` and their argument parsers. Most modules have the possibility to register parser options themself (using [argparse](https://docs.python.org/3/library/argparse.html)) and to parse the parameter themself.
@@ -79,7 +85,7 @@ Generally, every Input module also has a Randomizer module to generate a certain
 Output modules are used to generate LaTeX code for certain types of tasks. Since tasks are rather diverse, so are their respective output modules. Generally speaking, the exercise file contains first some text, usually consisting of a pretext, the input for the algorithm, followed by a posttext. Lastly space for entering the solution is given. The space is roughly oriented on the solution, but sometimes a bit more space is given (i.e. for open hashing we offer sufficient place to insert every item at one position)
 
 ### Testing
-The module `tests/...` offer various testing classes using [pytest](https://pytest.org/) with [mock](https://docs.python.org/3/library/unittest.mock.html). We use one testing file per category, where we try to test all algorithms in the same class similarly or even the same to enforce uniformity.
+The module `tests/...` offer various testing classes using [pytest](https://pytest.org/) with [mock](https://docs.python.org/3/library/unittest.mock.html) and [pytest-timeout](https://pypi.org/project/pytest-timeout/). We use one testing file per category, where we try to test all algorithms in the same class similarly or even the same to enforce uniformity.
 
 ### Documentation
 Documentation is designed for pydoctor using the command

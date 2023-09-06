@@ -3,12 +3,12 @@ import sys
 import pytest
 import mock
 
-import pyalgotask.__main__ as pyAlgoTask
+import pyalgotask.main as pyAlgoTask
 from pyalgotask.tasks import task_base
 
 __CATEGORY__ = "hashing"
 
-__EXAMPLE_INCORRECT_INPUTS__ = ["", "+0:1,+5,+7", "+1,-2", "+a,+b,-a", "a,b,c"]
+__EXAMPLE_INCORRECT_OP_INPUTS__ = ["", "+0:1,+5,+7", "+1,-2", "+a,+b,-a", "a,b,c"]
 
 
 def input_argument(task: str, arg_input: str):
@@ -31,12 +31,12 @@ def random_argument(task):
 
 def div_argument():
     """Parameters for division method"""
-    return ["--div", "5"]
+    return ["--div", "8"]
 
 
 def mult_argument():
     """Parameters for multiplication method"""
-    return ["--mult", "0.4", "7"]
+    return ["--mult", "0.4", "8"]
 
 
 def mult_shift_argument():
@@ -50,7 +50,7 @@ __HASH_FUNCTIONS__ = [div_argument, mult_argument, mult_shift_argument]
 class TestHashing:
     """Class for testing Sorting Algorithms"""
 
-    @pytest.mark.parametrize("input_operations", __EXAMPLE_INCORRECT_INPUTS__)
+    @pytest.mark.parametrize("input_operations", __EXAMPLE_INCORRECT_OP_INPUTS__)
     @pytest.mark.parametrize("hash_function", __HASH_FUNCTIONS__)
     @pytest.mark.timeout(2)
     def test_exception_input_chaining(self, input_operations, hash_function):
@@ -64,7 +64,7 @@ class TestHashing:
                 f"but it was {pytext_sysexit.value.code}."
             )
 
-    @pytest.mark.parametrize("input_operations", __EXAMPLE_INCORRECT_INPUTS__)
+    @pytest.mark.parametrize("input_operations", __EXAMPLE_INCORRECT_OP_INPUTS__)
     @pytest.mark.parametrize("hash_function", __HASH_FUNCTIONS__)
     @pytest.mark.timeout(2)
     def test_exception_input_linear(self, input_operations, hash_function):
@@ -78,7 +78,7 @@ class TestHashing:
                 f"but it was {pytext_sysexit.value.code}."
             )
 
-    @pytest.mark.parametrize("input_operations", __EXAMPLE_INCORRECT_INPUTS__)
+    @pytest.mark.parametrize("input_operations", __EXAMPLE_INCORRECT_OP_INPUTS__)
     @pytest.mark.parametrize("hash_function", __HASH_FUNCTIONS__)
     @pytest.mark.timeout(2)
     def test_exception_input_quadratic(self, input_operations, hash_function):
@@ -96,7 +96,7 @@ class TestHashing:
                 f"but it was {pytext_sysexit.value.code}."
             )
 
-    @pytest.mark.parametrize("input_operations", __EXAMPLE_INCORRECT_INPUTS__)
+    @pytest.mark.parametrize("input_operations", __EXAMPLE_INCORRECT_OP_INPUTS__)
     @pytest.mark.parametrize("hash_function_1", __HASH_FUNCTIONS__)
     @pytest.mark.parametrize("hash_function_2", __HASH_FUNCTIONS__)
     @pytest.mark.timeout(2)
@@ -125,7 +125,14 @@ class TestHashing:
         """tests randomization"""
         with mock.patch("sys.argv", random_argument("chaining") + hash_function()):
             try:
-                pyAlgoTask.main()
+                with pytest.raises(SystemExit) as pytest_exit:
+                    pyAlgoTask.main()
+                    sys.exit(0)
+                task = task_base.get_task_by_cmd("hashing", "chaining")
+                assert pytest_exit.value.code == 0, (
+                    f"The argument {sys.argv} on input {task.task_io.randomizer.last_result} "
+                    f"exited with error code but should not have."
+                )
             except Exception as exc:  # pylint: disable=broad-exception-caught
                 task = task_base.get_task_by_cmd("hashing", "chaining")
                 assert (
@@ -139,7 +146,14 @@ class TestHashing:
         """tests randomization"""
         with mock.patch("sys.argv", random_argument("linearprobing") + hash_function()):
             try:
-                pyAlgoTask.main()
+                with pytest.raises(SystemExit) as pytest_exit:
+                    pyAlgoTask.main()
+                    sys.exit(0)
+                task = task_base.get_task_by_cmd("hashing", "linearprobing")
+                assert pytest_exit.value.code == 0, (
+                    f"The argument {sys.argv} on input {task.task_io.randomizer.last_result} "
+                    f"exited with error code but should not have."
+                )
             except Exception as exc:  # pylint: disable=broad-exception-caught
                 task = task_base.get_task_by_cmd("hashing", "linearprobing")
                 assert (
@@ -155,10 +169,17 @@ class TestHashing:
             "sys.argv",
             random_argument("quadraticprobing")
             + hash_function()
-            + ["--constants", "2", "3"],
+            + ["--constants", "0.5", "0.5"],
         ):
             try:
-                pyAlgoTask.main()
+                with pytest.raises(SystemExit) as pytest_exit:
+                    pyAlgoTask.main()
+                    sys.exit(0)
+                task = task_base.get_task_by_cmd("hashing", "quadraticprobing")
+                assert pytest_exit.value.code == 0, (
+                    f"The argument {sys.argv} on input {task.task_io.randomizer.last_result} "
+                    f"exited with error code but should not have."
+                )
             except Exception as exc:  # pylint: disable=broad-exception-caught
                 task = task_base.get_task_by_cmd("hashing", "quadraticprobing")
                 assert (
@@ -178,10 +199,17 @@ class TestHashing:
             random_argument("doublehashing") + hash_function_1() + hash_2_args,
         ):
             try:
-                pyAlgoTask.main()
-            except Exception as exc:  # pylint: disable=broad-exception-caught
+                with pytest.raises(SystemExit) as pytest_exit:
+                    pyAlgoTask.main()
+                    sys.exit(0)
                 task = task_base.get_task_by_cmd("hashing", "doublehashing")
-                assert (
-                    False
-                ), f'The argument {sys.argv} on input {task.task_io.randomizer.last_result} \
-                    raised the exception "{exc}" but should not have.'
+                assert pytest_exit.value.code == 0, (
+                    f"The argument {sys.argv} on input {task.task_io.randomizer.last_result} "
+                    f"exited with error code but should not have."
+                )
+            except BaseException as exc:  # pylint: disable=broad-exception-caught
+                task = task_base.get_task_by_cmd("hashing", "doublehashing")
+                assert False, (
+                    f"The argument {sys.argv} on input {task.task_io.randomizer.last_result} "
+                    f"raised the exception '{exc}' but should not have."
+                )

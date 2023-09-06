@@ -40,12 +40,17 @@ dependencies = [
 #repository = ""
 
 [project.scripts]
-pyAlgoTask = "pyalgotask.__main__:main"
+pyAlgoTask = "pyalgotask.main:main"
 
-[tool.pytask.ini_options]
-paths = "src/pyalgotask"
-pythonpath = "src"
+[tool.pytest.ini_options]
+pythonpath = "."
+addopts = [
+    "--import-mode=importlib",
+]
 
-[build-system]
-requires = ["setuptools"]
-build-backend = "setuptools.build_meta"
+[tool.pylint.similarities]
+ignore-comments = true
+ignore-docstrings = true
+ignore-imports = true
+ignore-signatures = true
+min-similarity-lines = 12

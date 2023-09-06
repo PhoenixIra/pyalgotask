@@ -3,7 +3,7 @@ import sys
 import pytest
 import mock
 
-import pyalgotask.__main__ as pyAlgoTask
+import pyalgotask.main as pyAlgoTask
 from pyalgotask.tasks import task_base
 
 __CATEGORY__ = "sorting"
@@ -20,7 +20,7 @@ __TASK_NAMES__ = [
     "counting",
 ]
 
-__EXAMPLE_INCORRECT_INPUTS__ = ["", "0:1,5,7", "a,b,t"]
+__EXAMPLE_INCORRECT_SORT_INPUTS__ = ["", "0:1,5,7", "a,b,t"]
 
 
 def input_argument(task: str, input_array: str):
@@ -45,7 +45,7 @@ class TestSorting:
     """Class for testing Sorting Algorithms"""
 
     @pytest.mark.parametrize("task_name", __TASK_NAMES__)
-    @pytest.mark.parametrize("input_array", __EXAMPLE_INCORRECT_INPUTS__)
+    @pytest.mark.parametrize("input_array", __EXAMPLE_INCORRECT_SORT_INPUTS__)
     @pytest.mark.timeout(2)
     def test_exception_input_all(self, task_name, input_array):
         """tests various forbidden input data"""

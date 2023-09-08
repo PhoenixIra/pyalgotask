@@ -7,7 +7,7 @@ from . import __meta as meta
 from . import __settings as settings
 from .tasks import task_base
 
-from .export import Exporter # pylint: disable=wrong-import-position
+from .export import Exporter  # pylint: disable=wrong-import-position
 
 # let every task register itself
 from . import tasks  # pylint: disable=unused-import
@@ -32,11 +32,21 @@ def main():
             "If you choose no output file path, the generated files will not be written anywhere."
         ),
     )
+
     parser.add_argument(
         "-v",
         "--version",
         action="version",
         version=f"%(prog)s {meta.__version__}",
+    )
+
+    parser.add_argument(
+        "-l",
+        "--language",
+        type=str,
+        dest="lang",
+        default=settings.LANGUAGE,
+        help="Sets the language of the task. Currently available: enUK, deDE",
     )
 
     exporter = Exporter()
@@ -78,6 +88,9 @@ def main():
     if not args.cmd:
         cat_parsers[args.cat].print_help()
         sys.exit()
+
+    # sets the language
+    settings.LANGUAGE = args.lang
 
     # get requested task
     this_task = task_base.get_task_by_cmd(args.cat, args.cmd)

@@ -3,4 +3,4 @@ import logging
 
 LOGGING_LEVEL = logging.ERROR
 
-LANGUAGE = "deDE"
+LANGUAGE = "enUK"

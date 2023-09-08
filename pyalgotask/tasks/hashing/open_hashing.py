@@ -2,7 +2,7 @@
 from pyalgotask import language as lang
 
 from pyalgotask.tasks import task_base
-from pyalgotask.structures import OperationType
+from pyalgotask.structures.operation import OperationType
 from pyalgotask.tasks.hashing import hashing_base
 
 

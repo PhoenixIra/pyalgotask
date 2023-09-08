@@ -3,7 +3,7 @@ from abc import abstractmethod
 from enum import Enum, auto
 import math
 
-from pyalgotask.structures import OperationType
+from pyalgotask.structures.operation import OperationType
 from pyalgotask.randomizer.parameter import FloatParameterRandomizer
 from pyalgotask import language as lang
 

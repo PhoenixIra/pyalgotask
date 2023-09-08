@@ -1,6 +1,9 @@
 """Classes implementing the basic binary search tree"""
 from abc import ABC, abstractmethod
-from ... import exceptions
+
+
+class WrongTreeUsageError(Exception):
+    """Used for when a tree is wrongly used."""
 
 
 class BinarySearchTree(ABC):
@@ -68,6 +71,14 @@ class BinarySearchTree(ABC):
     def __str__(self):
         pass
 
+    @abstractmethod
+    def visitor(self, visitor):
+        """Visitor for the tree in postfix notation, i.e. first left, then right, then parent
+
+        :param visitor: the method to visir
+        :return: a list of return values, first of the root, then left, then right subtree
+        """
+
 
 class NilNode(BinarySearchTree):
     """
@@ -88,9 +99,7 @@ class NilNode(BinarySearchTree):
 
     @property
     def left(self):
-        raise exceptions.WrongAlgorithmImplementationError(
-            "Nil nodes have no left subtree"
-        )
+        raise WrongTreeUsageError("Nil nodes have no left subtree")
 
     @left.setter
     def left(self, value):
@@ -98,9 +107,7 @@ class NilNode(BinarySearchTree):
 
     @property
     def right(self):
-        raise exceptions.WrongAlgorithmImplementationError(
-            "Nil nodes have no right subtree"
-        )
+        raise WrongTreeUsageError("Nil nodes have no right subtree")
 
     @right.setter
     def right(self, value):
@@ -108,7 +115,7 @@ class NilNode(BinarySearchTree):
 
     @property
     def parent(self):
-        raise exceptions.WrongAlgorithmImplementationError("Nil nodes have no parents")
+        raise WrongTreeUsageError("Nil nodes have no parents")
 
     @parent.setter
     def parent(self, value):
@@ -116,11 +123,14 @@ class NilNode(BinarySearchTree):
 
     @property
     def value(self):
-        raise exceptions.WrongAlgorithmImplementationError("Nil nodes have no value")
+        raise WrongTreeUsageError("Nil nodes have no value")
 
     @value.setter
     def value(self, value):
         pass
+
+    def visitor(self, visitor):
+        return None
 
 
 class Node(BinarySearchTree):
@@ -132,16 +142,29 @@ class Node(BinarySearchTree):
     :ivar parent: the parent node of this node
     :ivar value: the value stored in this node"""
 
-    def __init__(self, value) -> None:
+    def __init__(self, value, *, left=None, right=None, parent=None) -> None:
         """
         Initialized the node as an tree consisting only of this node with the given value.
 
         :param value: the value of the node
         """
         super().__init__()
-        self._left = NilNode()
-        self._right = NilNode()
-        self._parent = NilNode()
+
+        if left is None:
+            self._left = NilNode()
+        else:
+            self._left = left
+
+        if right is None:
+            self._right = NilNode()
+        else:
+            self._right = right
+
+        if parent is None:
+            self._parent = NilNode()
+        else:
+            self._parent = parent
+
         self._value = value
 
     def is_nil(self):
@@ -209,7 +232,7 @@ class Node(BinarySearchTree):
     def right_rotate(self):
         """Rotates self to the right"""
         if self.left.is_nil():
-            raise exceptions.WrongAlgorithmImplementationError(
+            raise WrongTreeUsageError(
                 "Right rotate on a node that does not have a left node!"
             )
         new_root = self.left
@@ -224,7 +247,7 @@ class Node(BinarySearchTree):
     def left_rotate(self):
         """Rotates self to the left"""
         if self.right.is_nil():
-            raise exceptions.WrongAlgorithmImplementationError(
+            raise WrongTreeUsageError(
                 "Left rotate on a node that does not have a right node!"
             )
         new_root = self.right
@@ -235,3 +258,9 @@ class Node(BinarySearchTree):
         self.parent = new_root
         self.right = new_left_right
         new_left_right.parent = self
+
+    def visitor(self, visitor):
+        left_ret = self.left.visitor(visitor)
+        right_ret = self.right.visitor(visitor)
+        root_ret = visitor(self)
+        return (root_ret, left_ret, right_ret)

@@ -2,7 +2,7 @@
 import pathlib
 import logging
 
-from pyalgotask.structures import Operation, OperationType
+from pyalgotask.structures.operation import Operation, OperationType
 
 from pyalgotask.input.input_base import Input
 

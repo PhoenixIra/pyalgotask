@@ -7,7 +7,7 @@ from pyalgotask.output.output_base import Output
 
 
 @dataclasses.dataclass
-class TaskInfo:
+class ArrayTaskInfo:
     """Dataclass to bundle task related data
 
     :ivar prefix: prefix of the task explanation
@@ -20,7 +20,7 @@ class TaskInfo:
 
 
 @dataclasses.dataclass
-class LatexOptions:
+class ArrayLatexOptions:
     """Dataclass to bundle latex related options
 
     :ivar phantom_length: the default phantom length for solution file
@@ -58,12 +58,12 @@ class ArrayOutput(Output):
         :param postfix: the postfix of the task explanation
         :param algorithm: the algorithm generator
         """
-        self.task_info = TaskInfo(prefix, task_array, postfix)
+        self.task_info = ArrayTaskInfo(prefix, task_array, postfix)
         phantom_length = (
             2 if len(task_array) == 0 else max(len(str(x)) for x in task_array)
         )
         preamble = latex.Command("usetikzlibrary", "positioning")
-        self.latex_options = LatexOptions(
+        self.latex_options = ArrayLatexOptions(
             phantom_length,
             preamble,
             exercise_lengths_of_arrays=None,

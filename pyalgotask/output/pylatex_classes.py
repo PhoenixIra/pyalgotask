@@ -1,5 +1,6 @@
 """Various classes extending the capabilities of pylatex."""
 from pylatex.base_classes import Container, CommandBase
+from pylatex import TikZNode, Command
 
 
 class EmptyContainer(Container):
@@ -101,3 +102,89 @@ class StringEmptyContainer(EmptyContainer):
     def __repr__(self):  ##pylint: disable=invalid-repr-returned
         """returns dumps()"""
         return self.dumps()
+
+
+class SlashlessCommand(Command):
+    """
+    Command without slash in the front
+    """
+
+    def dumps(self):
+        """Represent the command as a string in LaTeX syntax.
+
+        :return: The LaTeX formatted command
+        """
+
+        options = self.options.dumps()  # pylint: disable=no-member
+        arguments = self.arguments.dumps()  # pylint: disable=no-member
+
+        if self.extra_arguments is None:
+            return f"{self.latex_name}{options}{arguments}"
+
+        extra_arguments = self.extra_arguments.dumps()
+
+        return f"{self.latex_name}{arguments}{options}{extra_arguments}"
+
+
+class TikZBinaryTreeNode(TikZNode):
+    """A class that represents a TiKZ node with tree children."""
+
+    tab_number = 1
+
+    def __init__(
+        self, handle=None, options=None, at=None, text=None, left=None, right=None
+    ):  # pylint: disable=too-many-arguments
+        """
+
+        :param handle: Node identifier
+        :param options: List of options
+        :param at: Coordinate where node is placed
+        :param text: Body text of the node
+        :param children: list of children TikZTreeNodes
+        """
+        super().__init__(handle, options, at, text)
+        self.left = left
+        self.right = right
+
+    def dumps(self):
+        """Return string representation of the node."""
+
+        ret_str = []
+        if TikZBinaryTreeNode.tab_number == 1:
+            ret_str.append(Command("node", options=self.options).dumps())
+        else:
+            ret_str.append(SlashlessCommand("node", options=self.options).dumps())
+
+        if self.handle is not None:
+            ret_str.append(f"({self.handle})")
+
+        if self._node_position is not None:
+            ret_str.append(f"at {str(self._position)}")
+
+        if self._node_text is not None:
+            ret_str.append(f"{{{self._node_text}}}")
+        else:
+            ret_str.append("{}")
+
+        nodes = []
+        nodes.append(" ".join(ret_str))
+
+        TikZBinaryTreeNode.tab_number += 1
+
+        if self.left is not None:
+            nodes.append(
+                "    " * TikZBinaryTreeNode.tab_number
+                + f"child [left=25] {{{self.left.dumps()}}}"
+            )
+        if self.right is not None:
+            nodes.append(
+                "    " * TikZBinaryTreeNode.tab_number
+                + f"child [right=25] {{{self.right.dumps()}}}"
+            )
+
+        TikZBinaryTreeNode.tab_number -= 1
+
+        if TikZBinaryTreeNode.tab_number == 1:
+            return "%\n".join(nodes) + ";"
+        else:
+            return "%\n".join(nodes)

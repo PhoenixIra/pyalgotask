@@ -2,6 +2,8 @@ language: English (UK)
 language-origin: English
 missing-local: "No translation for this text found."
 texts:
+  insert-operation: "Insert {}"
+  delete-operation: "Delete {}"
   sorting:
     bubble-prefix: "Given this array A:"
     bubble-postfix: "Execute bubble sort on array A and note the array after \\emph{each} swap operation."

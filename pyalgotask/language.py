@@ -8,8 +8,8 @@ from . import __settings as settings
 _logger = logging.getLogger(__name__)
 
 
-_python_folder = Path(__file__).parent
-_language_file = Path(_python_folder, "languages", settings.LANGUAGE).with_suffix(
+_project_folder = Path(__file__).parent
+_language_file = Path(_project_folder, "languages", settings.LANGUAGE).with_suffix(
     ".yaml"
 )
 

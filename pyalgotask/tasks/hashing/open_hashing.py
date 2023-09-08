@@ -1,9 +1,9 @@
 """Module for tasks with open hashing"""
-from ... import language as lang
+from pyalgotask import language as lang
 
-from .. import task_base
-from ...structures import OperationType
-from . import hashing_base
+from pyalgotask.tasks import task_base
+from pyalgotask.structures import OperationType
+from pyalgotask.tasks.hashing import hashing_base
 
 
 class ChainingHashing(hashing_base.Hashing):

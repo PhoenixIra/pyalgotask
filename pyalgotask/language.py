@@ -3,7 +3,7 @@ from pathlib import Path
 import logging
 import yaml
 
-from . import __settings as settings
+from pyalgotask import __settings as settings
 
 _logger = logging.getLogger(__name__)
 

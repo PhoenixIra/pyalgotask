@@ -1,8 +1,8 @@
 """Module for quick sort tasks"""
-from ... import language as lang
-from .. import task_base
+from pyalgotask import language as lang
+from pyalgotask.tasks import task_base
 
-from .sorting_base import Sorting
+from pyalgotask.tasks.sorting.sorting_base import Sorting
 
 
 def _quicksort(array, left_index, right_index, partition_scheme):

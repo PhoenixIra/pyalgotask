@@ -3,12 +3,12 @@ from abc import abstractmethod
 from enum import Enum, auto
 import math
 
-from ...structures import OperationType
-from ...randomizer.parameter import FloatParameterRandomizer
-from ... import language as lang
+from pyalgotask.structures import OperationType
+from pyalgotask.randomizer.parameter import FloatParameterRandomizer
+from pyalgotask import language as lang
 
-from .. import task_base
-from . import hashing_base
+from pyalgotask.tasks import task_base
+from pyalgotask.tasks.hashing import hashing_base
 
 
 class _SpecialValue(Enum):

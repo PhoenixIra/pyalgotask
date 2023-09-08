@@ -3,14 +3,14 @@ import argparse
 import sys
 import logging
 
-from . import __meta as meta
-from . import __settings as settings
-from .tasks import task_base
+import pyalgotask.__meta as meta
+import pyalgotask.__settings as settings
+from pyalgotask.tasks import task_base
 
-from .export import Exporter  # pylint: disable=wrong-import-position
+from pyalgotask.export import Exporter  # pylint: disable=wrong-import-position
 
 # let every task register itself
-from . import tasks  # pylint: disable=unused-import
+from pyalgotask import tasks  # pylint: disable=unused-import
 
 
 logging.basicConfig(level=settings.LOGGING_LEVEL)

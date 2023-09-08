@@ -1,7 +1,7 @@
 """Module containing all tasks"""
-from . import task_base
-from . import sorting
-from . import hashing
+from pyalgotask.tasks import task_base
+from pyalgotask.tasks import sorting
+from pyalgotask.tasks import hashing
 
 __all__ = [
     # abstract base class for tasks

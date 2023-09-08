@@ -1,6 +1,6 @@
 """Modul to randomize insert and delete operations"""
-from ..randomizer import randomizer_base
-from ..structures import Operation, OperationType
+from pyalgotask.randomizer import randomizer_base
+from pyalgotask.structures import Operation, OperationType
 
 
 class RandomInDelOperations(randomizer_base.Randomizer):

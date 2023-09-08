@@ -2,7 +2,7 @@
 from enum import Enum, auto
 from collections import namedtuple
 
-from . import language as lang
+from pyalgotask import language as lang
 
 
 class OperationType(Enum):

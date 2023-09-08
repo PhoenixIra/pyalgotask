@@ -1,11 +1,11 @@
 """Module for counting sort task"""
 
-from ... import language as lang
-from ...output.array import ArrayOutput
-from ...randomizer.array import RandomIntArray
-from ...tasks import task_base
+from pyalgotask import language as lang
+from pyalgotask.output.array import ArrayOutput
+from pyalgotask.randomizer.array import RandomIntArray
+from pyalgotask.tasks import task_base
 
-from .sorting_base import Sorting
+from pyalgotask.tasks.sorting.sorting_base import Sorting
 
 
 class Countingsort(Sorting):

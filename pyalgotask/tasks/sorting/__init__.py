@@ -1,5 +1,5 @@
 """Tasks dealing with sorting"""
-from . import (
+from pyalgotask.tasks.sorting import (
     quicksort,
     sorting_base,
     bubble,

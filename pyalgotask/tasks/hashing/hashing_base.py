@@ -3,11 +3,11 @@
 from abc import abstractmethod
 import math
 
-from .. import task_base
-from ...output.array import OperationsArrayOutput
-from ...input.in_del_operators import InDelOperators
-from ...randomizer.in_del_operators import RandomInDelOperations
-from ... import language as lang
+from pyalgotask.tasks import task_base
+from pyalgotask.output.array import OperationsArrayOutput
+from pyalgotask.input.in_del_operators import InDelOperators
+from pyalgotask.randomizer.in_del_operators import RandomInDelOperations
+from pyalgotask import language as lang
 
 
 def division_hashing(size_constant):

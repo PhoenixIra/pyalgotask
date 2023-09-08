@@ -1,8 +1,8 @@
 """Module for bubble sort task"""
-from ... import language as lang
+from pyalgotask import language as lang
 
-from .. import task_base
-from .sorting_base import Sorting
+from pyalgotask.tasks import task_base
+from pyalgotask.tasks.sorting.sorting_base import Sorting
 
 
 class Bubble(Sorting):

@@ -1,6 +1,6 @@
 """Randomizer for arrays with various input types"""
 from random import Random
-from ..randomizer import randomizer_base
+from pyalgotask.randomizer import randomizer_base
 
 
 class RandomIntArray(randomizer_base.Randomizer):

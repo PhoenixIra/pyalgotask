@@ -1,12 +1,12 @@
 """Module for bucket sort task"""
 import math
 
-from ... import language as lang
+from pyalgotask import language as lang
 
-from .. import task_base
-from ...output.array import ArrayOutput
-from ...randomizer.array import RandomFloatArray
-from .sorting_base import Sorting
+from pyalgotask.tasks import task_base
+from pyalgotask.output.array import ArrayOutput
+from pyalgotask.randomizer.array import RandomFloatArray
+from pyalgotask.tasks.sorting.sorting_base import Sorting
 
 
 def str_to_zero_one(value: str) -> float:

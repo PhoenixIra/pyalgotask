@@ -1,11 +1,11 @@
 """Base class for algorithms sorting an array of usually integer values"""
 from abc import abstractmethod
 
-from .. import task_base
+from pyalgotask.tasks import task_base
 
-from ...input.array import ArrayInput
-from ...randomizer.array import RandomIntArray
-from ...output.array import AlgorithmArrayOutput
+from pyalgotask.input.array import ArrayInput
+from pyalgotask.randomizer.array import RandomIntArray
+from pyalgotask.output.array import AlgorithmArrayOutput
 
 
 class Sorting(task_base.Task):

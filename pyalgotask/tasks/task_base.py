@@ -4,9 +4,9 @@ import dataclasses
 from abc import ABC, abstractmethod
 from pylatex.base_classes.latex_object import LatexObject
 
-from ..input.input_base import Input
-from ..randomizer.randomizer_base import Randomizer
-from ..output.output_base import Output
+from pyalgotask.input.input_base import Input
+from pyalgotask.randomizer.randomizer_base import Randomizer
+from pyalgotask.output.output_base import Output
 
 
 @dataclasses.dataclass

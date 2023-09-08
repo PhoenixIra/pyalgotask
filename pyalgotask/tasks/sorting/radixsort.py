@@ -1,10 +1,10 @@
 """Module for radix sort task"""
 import math
 
-from .. import task_base
-from ... import language as lang
+from pyalgotask.tasks import task_base
+from pyalgotask import language as lang
 
-from .sorting_base import Sorting
+from pyalgotask.tasks.sorting.sorting_base import Sorting
 
 
 def str_to_nat(value: str) -> int:

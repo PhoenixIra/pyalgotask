@@ -1,10 +1,10 @@
 """Module for heap sort tasks"""
 import math
 
-from ... import language as lang
-from .. import task_base
+from pyalgotask import language as lang
+from pyalgotask.tasks import task_base
 
-from .sorting_base import Sorting
+from pyalgotask.tasks.sorting.sorting_base import Sorting
 
 
 def _parent(index):

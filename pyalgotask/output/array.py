@@ -1,9 +1,9 @@
 """Outputs arrays with various special options"""
 import dataclasses
 import pylatex as latex
-from . import pylatex_classes as clatex
+from pyalgotask.output import pylatex_classes as clatex
 
-from .output_base import Output
+from pyalgotask.output.output_base import Output
 
 
 @dataclasses.dataclass

@@ -2,9 +2,9 @@
 import pathlib
 import logging
 
-from ..structures import Operation, OperationType
+from pyalgotask.structures import Operation, OperationType
 
-from .input_base import Input
+from pyalgotask.input.input_base import Input
 
 _logger = logging.getLogger(__name__)
 

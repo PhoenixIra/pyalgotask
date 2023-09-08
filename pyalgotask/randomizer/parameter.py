@@ -1,6 +1,6 @@
 """Module for a random integer parameter"""
 from random import Random
-from . import randomizer_base
+from pyalgotask.randomizer import randomizer_base
 
 
 class IntParameterRandomizer(randomizer_base.Randomizer):

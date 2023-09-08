@@ -1,5 +1,5 @@
 """Various tasks about hash tables"""
-from . import hashing_base, open_hashing, closed_hashing
+from pyalgotask.tasks.hashing import hashing_base, open_hashing, closed_hashing
 
 __all__ = [
     # tasks

@@ -2,7 +2,7 @@
 import pathlib
 import logging
 
-from .input_base import Input
+from pyalgotask.input.input_base import Input
 
 _logger = logging.getLogger(__name__)
 

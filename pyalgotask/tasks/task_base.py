@@ -70,12 +70,6 @@ class Task(ABC):
         :yield: intermediate steps of the algorithm"""
 
     @abstractmethod
-    def generate_preamble(self) -> LatexObject:
-        """Method to generate an preamble latex code for this task
-
-        :return: the preamble of this task"""
-
-    @abstractmethod
     def generate_exercise(self) -> LatexObject:
         """Method to generate an exercise LaTeX file code
 

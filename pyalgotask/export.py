@@ -84,7 +84,7 @@ class Exporter:
         """
         if self.exercise_tex_file:
             doc = latex.Document()
-            doc.preamble.append(task.generate_preamble())
+            doc.preamble.append(task.task_io.output.get_exercise_preamble())
             doc.append(task.generate_exercise())
             if not self.pdf and not self.view:
                 doc.generate_tex(self.exercise_tex_file)
@@ -103,7 +103,7 @@ class Exporter:
         """
         if self.solution_tex_file:
             doc = latex.Document()
-            doc.preamble.append(task.generate_preamble())
+            doc.preamble.append(task.task_io.output.get_solution_preamble())
             doc.append(task.generate_solution())
             if not self.pdf and not self.view:
                 doc.generate_tex(self.solution_tex_file)

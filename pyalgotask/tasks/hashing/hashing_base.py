@@ -238,12 +238,6 @@ class Hashing(task_base.Task):
 
         self.parse_hashing(arg_input)
 
-    def generate_preamble(self):
-        """Method to generate an preamble latex code for this task
-
-        :return: the preamble of this task"""
-        return self.task_io.output.latex_options.preamble
-
     def generate_exercise(self):
         """Method to generate an exercise LaTeX file code
 

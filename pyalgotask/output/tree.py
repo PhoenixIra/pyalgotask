@@ -79,14 +79,14 @@ class TreeOutput(Output):
         """
         self.one_column = args.one_column
 
-    def get_preamble_exercise(self):
+    def get_exercise_preamble(self):
         return self.latex_options.exercise_preamble
-    
-    def get_preamble_solution(self):
+
+    def get_solution_preamble(self):
         return self.latex_options.solution_preamble
 
     def generate_exercise(self) -> LatexObject:
-        """Fille an LaTeX Container with the task explanation over lists of operations
+        """Fills an LaTeX Container with the task explanation over lists of operations
 
         :param container: The container that is filled"""
         container = clatex.EmptyContainer()

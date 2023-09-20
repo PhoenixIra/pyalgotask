@@ -21,13 +21,15 @@ class TreeTaskInfo:
 
 
 @dataclasses.dataclass
-class ArrayLatexOptions:
+class TreeLatexOptions:
     """Dataclass to bundle latex related options
 
     :ivar one_column: whether the trees should be in one column (instead of two)
-    :ivar preamble: preamble for the LaTeX file"""
+    :ivar exercise_preamble: preamble for the exercise LaTeX file
+    :ivar solution_preamble: preamble for the solution LaTeX file"""
 
-    preamble: latex.base_classes.LatexObject
+    exercise_preamble: latex.base_classes.LatexObject
+    solution_preamble: latex.base_classes.LatexObject
     one_column: bool
 
 
@@ -46,9 +48,11 @@ class TreeOutput(Output):
         super().__init__()
         self.one_column = False
         self.task_info = TreeTaskInfo(exercise_prefix, operations, exercise_postfix)
-        preamble = clatex.EmptyContainer()
-        self.latex_options = ArrayLatexOptions(
-            preamble=preamble,
+        exercise_preamble = clatex.EmptyContainer()
+        solution_preamble = latex.Command("usetikzlibrary", "positioning")
+        self.latex_options = TreeLatexOptions(
+            exercise_preamble=exercise_preamble,
+            solution_preamble=solution_preamble,
             one_column=False,
         )
         self.algorithm = algorithm
@@ -74,6 +78,12 @@ class TreeOutput(Output):
         :param args: The output of the argparser parser
         """
         self.one_column = args.one_column
+
+    def get_preamble_exercise(self):
+        return self.latex_options.exercise_preamble
+    
+    def get_preamble_solution(self):
+        return self.latex_options.solution_preamble
 
     def generate_exercise(self) -> LatexObject:
         """Fille an LaTeX Container with the task explanation over lists of operations
@@ -136,7 +146,7 @@ class TreeOutput(Output):
     def create_tikz_tree(self):
         """Creates a tikz environment for the tree"""
         return latex.TikZ(
-            options=latex.NoEscape("every node/.append style={circle, draw}")
+            options=latex.NoEscape("every node/.append style={circle, draw, sibling angle=25}")
         )
 
     def create_visitor_for_node(self):

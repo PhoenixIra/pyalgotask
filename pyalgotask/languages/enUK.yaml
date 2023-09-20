@@ -37,3 +37,6 @@ texts:
     probing-linear: "linear probing:"
     probing-quadratic: "quadratic probing:"
     probing-double-postfix: "Assume the following hash functions and double hashing:"
+  tree:
+    binary_search_tree_prefix: "Execute the following operations on an initial empty binary search tree:"
+    binary_search_tree_postfix: "Give the resulting tree graphically after each operation."

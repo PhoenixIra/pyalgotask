@@ -37,4 +37,7 @@ texts:
     probing-linear: "lineare Sondierung an:"
     probing-quadratic: "quadratische Sondierung an:"
     probing-double-postfix: "Nehmen Sie dabei die folgenden Hashfunktionen und doppeltes Hashing an:"
+  tree:
+    binary_search_tree_prefix: "Führe die folgenden Operationen auf einen anfangs leeren binären Suchenbaum aus:"
+    binary_search_tree_postfix: "Gib den Baum nach jeder Operation graphisch an."
 

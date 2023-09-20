@@ -69,18 +69,6 @@ class Task(ABC):
 
         :yield: intermediate steps of the algorithm"""
 
-    @abstractmethod
-    def generate_exercise(self) -> LatexObject:
-        """Method to generate an exercise LaTeX file code
-
-        :return: the ``LatexObject`` representing the exercise"""
-
-    @abstractmethod
-    def generate_solution(self) -> LatexObject:
-        """Method to generate an solution LaTeX file code
-
-        :return: the ``LatexObject`` representing the solution"""
-
 
 __tasks_dict = {}
 """Dictionary for registrations of all tasks"""

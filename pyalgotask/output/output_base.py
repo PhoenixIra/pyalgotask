@@ -23,12 +23,24 @@ class Output(ABC):
         :param args: The output of the argparser parser
         """
 
+    def get_exercise_preamble(self) -> LatexObject:
+        """
+        Getter for the preamble designated for the exercise sheet.
+        
+        :return: A base LaTeX object from pylatex containing the preamble for the exercise sheet"""
+
+    def get_solution_preamble(self) -> LatexObject:
+        """
+        Getter for the preamble designated for the solution sheet.
+        
+        :return: A base LaTeX object from pylatex containing the preamble for the solution sheet"""
+
     @abstractmethod
     def generate_exercise(self) -> LatexObject:
         """
         Method for generating the LaTeX source code for the exercise sheet.
 
-        :return: A base LaTeX object from pylatex containg the exercise sheet.
+        :return: A base LaTeX object from pylatex containing the exercise sheet.
         """
 
     @abstractmethod
@@ -36,5 +48,5 @@ class Output(ABC):
         """
         Method for generating the LaTeX source code for the solution sheet.
 
-        :return: A base LaTeX object from pylatex containg the solution sheet.
+        :return: A base LaTeX object from pylatex containing the solution sheet.
         """

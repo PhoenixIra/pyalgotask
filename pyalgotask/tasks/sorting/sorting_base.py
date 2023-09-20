@@ -88,24 +88,6 @@ class Sorting(task_base.Task):
 
         :yield: intermediate steps"""
 
-    def generate_preamble(self):
-        """Method to generate an preamble latex code for this task
-
-        :return: LaTeX object of the preamble"""
-        return self.task_io.output.latex_options.preamble
-
-    def generate_exercise(self):
-        """Method to generate an exercise LaTeX file code
-
-        :return: LaTeX object of the exercise"""
-        return self.task_io.output.generate_exercise()
-
-    def generate_solution(self):
-        """Method to generate an solution LaTeX file code
-
-        :return: LaTeX object of the solution"""
-        return self.task_io.output.generate_solution()
-
 
 task_base.register_category(
     "sorting",

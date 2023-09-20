@@ -98,9 +98,13 @@ class ArrayOutput(Output):
             self.latex_options.phantom_length
             < self.latex_options.exercise_phantom_length
         ):
-            self.latex_options.phantom_length = (
-                self.latex_options.exercise_phantom_length
-            )
+            self.latex_options.phantom_length = self.latex_options.exercise_phantom_length
+
+    def get_exercise_preamble(self):
+        return self.latex_options.preamble
+
+    def get_solution_preamble(self):
+        return self.latex_options.preamble
 
     def generate_exercise(self):
         """Generates a ``LatexObject`` consisting of the exercise without preamble"""

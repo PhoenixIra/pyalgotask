@@ -2,7 +2,6 @@
 the functionality to allow tasks register themself to the main method"""
 import dataclasses
 from abc import ABC, abstractmethod
-from pylatex.base_classes.latex_object import LatexObject
 
 from pyalgotask.input.input_base import Input
 from pyalgotask.randomizer.randomizer_base import Randomizer
@@ -68,24 +67,6 @@ class Task(ABC):
         or it may be an latex object which should be printed.
 
         :yield: intermediate steps of the algorithm"""
-
-    @abstractmethod
-    def generate_preamble(self) -> LatexObject:
-        """Method to generate an preamble latex code for this task
-
-        :return: the preamble of this task"""
-
-    @abstractmethod
-    def generate_exercise(self) -> LatexObject:
-        """Method to generate an exercise LaTeX file code
-
-        :return: the ``LatexObject`` representing the exercise"""
-
-    @abstractmethod
-    def generate_solution(self) -> LatexObject:
-        """Method to generate an solution LaTeX file code
-
-        :return: the ``LatexObject`` representing the solution"""
 
 
 __tasks_dict = {}

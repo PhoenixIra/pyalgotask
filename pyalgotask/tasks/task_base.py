@@ -2,7 +2,6 @@
 the functionality to allow tasks register themself to the main method"""
 import dataclasses
 from abc import ABC, abstractmethod
-from pylatex.base_classes.latex_object import LatexObject
 
 from pyalgotask.input.input_base import Input
 from pyalgotask.randomizer.randomizer_base import Randomizer

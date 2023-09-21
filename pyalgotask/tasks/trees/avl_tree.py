@@ -1,7 +1,7 @@
 """Task for inserting or deleting in regular binary search trees"""
 
 from pyalgotask.tasks import task_base
-from pyalgotask.tasks.trees.tree_base import Tree
+from pyalgotask.tasks.trees.binary_search_tree import BinarySearchTree
 
 from pyalgotask.structures.binary_search_tree import AVLNode, AVLNil
 from pyalgotask.structures.operation import OperationType
@@ -9,7 +9,7 @@ from pyalgotask.structures.operation import OperationType
 from pyalgotask import language as lang
 
 
-class AVLTree(Tree):
+class AVLTree(BinarySearchTree):
     """
     Adelson-Velsky and Landis Trees (short: AVL Trees) inspired by 
     Donald E. Knuth. The Art of Computer Programming Volume 3: 
@@ -182,39 +182,6 @@ class AVLTree(Tree):
 
         return last
 
-
-    def transplant(self, root, node_to, node_from):
-        """Transplants node_from into node_to
-
-        :param root: root of the tree
-        :param node_to: the node to replace
-        :param node_from: the node to insert
-        :return: the new root of the tree"""
-        if node_to.parent.is_nil():
-            root = node_from
-        elif node_to == node_to.parent.left:
-            node_to.parent.left = node_from
-        else:
-            node_to.parent.right = node_from
-
-        if not node_from.is_nil():
-            node_from.parent = node_to.parent
-
-        return root
-
-    def search(self, root, value):
-        """Searches a value from the tree rooted at root and returns it
-
-        :param root: root of the tree
-        :param value: value to search for
-        :return: node with value"""
-        current = root
-        while not current.is_nil() and value != current.value:
-            if value < current.value:
-                current = current.left
-            else:
-                current = current.right
-        return current
 
     def delete_adjust_balance(self, node):
         """Adjusts the balance values of all nodes in the tree after a delete

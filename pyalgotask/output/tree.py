@@ -49,7 +49,9 @@ class TreeOutput(Output):
         self.one_column = False
         self.task_info = TreeTaskInfo(exercise_prefix, operations, exercise_postfix)
         exercise_preamble = clatex.EmptyContainer()
-        solution_preamble = latex.Command("usetikzlibrary", "positioning")
+        solution_preamble = clatex.EmptyContainer()
+        solution_preamble.append(latex.Command("usetikzlibrary", "positioning"))
+        solution_preamble.append(latex.Command("usetikzlibrary", "trees"))
         self.latex_options = TreeLatexOptions(
             exercise_preamble=exercise_preamble,
             solution_preamble=solution_preamble,
@@ -146,7 +148,7 @@ class TreeOutput(Output):
     def create_tikz_tree(self):
         """Creates a tikz environment for the tree"""
         return latex.TikZ(
-            options=latex.NoEscape("every node/.append style={circle, draw, sibling angle=25}")
+            options=latex.NoEscape("every node/.append style={circle, draw, sibling angle=23}")
         )
 
     def create_visitor_for_node(self):

@@ -95,7 +95,7 @@ class RandomInDelOperations(randomizer_base.Randomizer):
             random_operations = self.random.choices(
                 population=[0, 1],
                 weights=[self.deletion_probability, 1 - self.deletion_probability],
-                k=self.operations_length - 1,
+                k=self.operations_length,
             )
             op_nums, op_num = [], 0
             for is_insert in random_operations:

@@ -174,12 +174,12 @@ class TikZBinaryTreeNode(TikZNode):
         if self.left is not None:
             nodes.append(
                 "    " * TikZBinaryTreeNode.tab_number
-                + f"child [left=25] {{{self.left.dumps()}}}"
+                + f"child [left=23] {{{self.left.dumps()}}}"
             )
         if self.right is not None:
             nodes.append(
                 "    " * TikZBinaryTreeNode.tab_number
-                + f"child [right=25] {{{self.right.dumps()}}}"
+                + f"child [right=23] {{{self.right.dumps()}}}"
             )
 
         TikZBinaryTreeNode.tab_number -= 1

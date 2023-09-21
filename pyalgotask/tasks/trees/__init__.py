@@ -1,8 +1,9 @@
 """Tasks involving tree, mostly search trees"""
-from pyalgotask.tasks.trees import tree_base, binary_search_tree
+from pyalgotask.tasks.trees import tree_base, binary_search_tree, avl_tree
 
 __all__ = [
     # tasks
     "tree_base",
     "binary_search_tree",
+    "avl_tree"
 ]

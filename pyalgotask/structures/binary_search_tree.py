@@ -142,7 +142,7 @@ class Node(BinarySearchTree):
     :ivar parent: the parent node of this node
     :ivar value: the value stored in this node"""
 
-    def __init__(self, value, *, left=None, right=None, parent=None) -> None:
+    def __init__(self, value, *, left=None, right=None, parent=None, nil_class = NilNode) -> None:
         """
         Initialized the node as an tree consisting only of this node with the given value.
 
@@ -151,17 +151,17 @@ class Node(BinarySearchTree):
         super().__init__()
 
         if left is None:
-            self._left = NilNode()
+            self._left = nil_class()
         else:
             self._left = left
 
         if right is None:
-            self._right = NilNode()
+            self._right = nil_class()
         else:
             self._right = right
 
         if parent is None:
-            self._parent = NilNode()
+            self._parent = nil_class()
         else:
             self._parent = parent
 
@@ -238,11 +238,19 @@ class Node(BinarySearchTree):
         new_root = self.left
         new_right_left = self.left.right
 
+        if not self.parent.is_nil() and self.parent.left == self:
+            self.parent.left = new_root
+        elif not self.parent.is_nil() and self.parent.right == self:
+            self.parent.right = new_root
+
         new_root.parent = self.parent
         new_root.right = self
+
         self.parent = new_root
         self.left = new_right_left
+
         new_right_left.parent = self
+        return new_root
 
     def left_rotate(self):
         """Rotates self to the left"""
@@ -253,14 +261,100 @@ class Node(BinarySearchTree):
         new_root = self.right
         new_left_right = self.right.left
 
+        if not self.parent.is_nil() and self.parent.left == self:
+            self.parent.left = new_root
+        elif not self.parent.is_nil() and self.parent.right == self:
+            self.parent.right = new_root
+
         new_root.parent = self.parent
         new_root.left = self
+
         self.parent = new_root
         self.right = new_left_right
+
         new_left_right.parent = self
+        return new_root
 
     def visitor(self, visitor):
         left_ret = self.left.visitor(visitor)
         right_ret = self.right.visitor(visitor)
         root_ret = visitor(self)
         return (root_ret, left_ret, right_ret)
+
+class AVLTree(ABC): #pylint: disable=too-few-public-methods
+    """Abstract class representing nodes of an AVL Tree
+    
+    :ivar balance: the balance of the current Node"""
+
+    @property
+    @abstractmethod
+    def balance(self):
+        """:return: the balance of this node"""
+
+    @balance.setter
+    @abstractmethod
+    def balance(self, balance):
+        """:ivar balance: the balance to set this node to"""
+
+class AVLNil(NilNode, AVLTree):
+    """Nil node with fixed balancing"""
+
+    @property
+    def balance(self):
+        return 0
+
+    @balance.setter
+    def balance(self, balance):
+        raise WrongTreeUsageError(
+            "NilNodes balance cannot be overwritten"
+        )
+
+class AVLNode(Node, AVLTree):
+    """
+    Class representing an AVL Tree node
+
+    :ivar left: the left subtree of the node
+    :ivar right: the right subtree of the node
+    :ivar parent: the parent node of this node
+    :ivar value: the value stored in this node
+    :ivar balancing: the balancing value of this node"""
+
+    def __init__(
+        self, value, *, left=None, right=None, parent=None, balance=0
+    ) -> None:
+        """
+        Initialized the node as an tree consisting only of this node with the given value.
+
+        :param value: the value of the node
+        """
+        super().__init__(value, left=left, right=right, parent=parent)
+
+        self._balance = balance
+
+    def __repr__(self):
+        return (
+            "["
+            + repr(self.value)
+            + f", b={self._balance}"
+            + repr(self.left)
+            + repr(self.right)
+            + "]"
+        )
+
+    def __str__(self):
+        return (
+            "[ Node "
+            + str(self.value)
+            + f", b={self._balance}"
+            + str(self.left)
+            + str(self.right)
+            + "]"
+        )
+
+    @property
+    def balance(self):
+        return self._balance
+
+    @balance.setter
+    def balance(self, balance):
+        self._balance = balance

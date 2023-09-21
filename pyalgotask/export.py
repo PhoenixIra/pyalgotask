@@ -34,6 +34,7 @@ class Exporter:
             "--exercise",
             type=str,
             dest="exercise_tex",
+            default="exercise",
             help="The file where the exercise description will be saved to without file extension.",
         )
         parser.add_argument(
@@ -41,6 +42,7 @@ class Exporter:
             "--solution",
             type=str,
             dest="solution_tex",
+            default="solution",
             help="The file where the solution description will be saved to without file extension.",
         )
         parser.add_argument(
@@ -72,7 +74,7 @@ class Exporter:
             self.solution_tex_file,
         )
         if not self.exercise_tex_file and not self.solution_tex_file:
-            _logger.error("No output specified! Did you forget -e or -s?")
+            _logger.error("No output specified! Did you forget to specify -e or -s?")
 
     def write_exercise(self, task) -> str:
         """

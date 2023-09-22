@@ -186,5 +186,4 @@ class TikZBinaryTreeNode(TikZNode):
 
         if TikZBinaryTreeNode.tab_number == 1:
             return "%\n".join(nodes) + ";"
-        else:
-            return "%\n".join(nodes)
+        return "%\n".join(nodes)

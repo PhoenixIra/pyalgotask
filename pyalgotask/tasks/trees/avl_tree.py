@@ -11,8 +11,8 @@ from pyalgotask import language as lang
 
 class AVLTree(BinarySearchTree):
     """
-    Adelson-Velsky and Landis Trees (short: AVL Trees) inspired by 
-    Donald E. Knuth. The Art of Computer Programming Volume 3: 
+    Adelson-Velsky and Landis Trees (short: AVL Trees) inspired by
+    Donald E. Knuth. The Art of Computer Programming Volume 3:
     Sorting and Searching
 
     :ivar cmd_info: a bundle of cmd information
@@ -38,15 +38,14 @@ class AVLTree(BinarySearchTree):
     def tree_parse(self, arg_input) -> None:
         pass
 
-    def insert(self, node, value):
+    def insert(self, value):
         """Performs an insert of the value to the tree
 
-        :param node: the root of the tree to insert into
         :param value: the value to insert
         :return: the tree with the value inserted
         """
         # Initialize (A1)
-        current = node
+        current = self.algorithm_root
         parent = AVLNil()
 
         # Compare, Move left and Move right (A2, A3, A4)
@@ -63,7 +62,8 @@ class AVLTree(BinarySearchTree):
         new_node = AVLNode(value, parent=parent)
 
         if parent.is_nil():
-            return new_node
+            self.algorithm_root = new_node
+            return
 
         if value < parent.value:
             parent.left = new_node
@@ -71,179 +71,126 @@ class AVLTree(BinarySearchTree):
             parent.right = new_node
 
         # balance adjust (A6)
-        self.insert_adjust_balance(new_node)
+        self.adjust_depth(new_node.parent)
 
         # rebalance (A7-A9)
-        root = self.balance(new_node)
+        self.balance(new_node)
 
-        return root
+    def adjust_depth(self, node):
+        """adjusts the depth values starting from node
 
-    def insert_adjust_balance(self,new_node):
-        """adjusts the balance values after inserting new_nide
-        
-        :param new_node: the inserted node"""
+        :param node: the inserted node"""
         # Adjust balancing (A6)
-        last = new_node
-        current = new_node.parent
+        current = node
         while not current.is_nil():
-            if current.left == last:
-                # added left
-                current.balance -= 1
-                if current.balance == 0:
-                    # height remained
-                    break
-            elif current.right == last:
-                # added right
-                current.balance += 1
-                if current.balance == 0:
-                    # height remained
-                    break
+            current.recalculate_depth()
+            current = current.parent
 
     def balance_left(self, current):
         """Balances a left imbalance of current
-        
+
         :param current: the node to balance
         :return: the new root of the subtree"""
         left = current.left
-        if left.balance in (-1, 0):
+        if left.left.depth >= left.right.depth:
             # left leaning or balanced
             current = current.right_rotate()
-            current.balance += 1
-            current.right.balance += 1
-        elif left.balance == 1:
+
+            current.right.recalculate_depth()
+            current.recalculate_depth()
+        else:
             # left right leaning
-            left_right_balance = left.right.balance
             left.left_rotate()
             current = current.right_rotate()
 
-            current.balance = 0
-
-            # decide where the small subtree goes to
-            if left_right_balance == 1:
-                current.left.balance = -1
-            else:
-                current.left.balance = 0
-            if left_right_balance == -1:
-                current.right.balance = 1
-            else:
-                current.right.balance = 0
+            current.left.recalculate_depth()
+            current.right.recalculate_depth()
+            current.recalculate_depth()
 
         return current
 
     def balance_right(self, current):
         """Balances a right imbalance of current
-        
+
         :param current: the node to balance
         :return: the new root of the subtree"""
         right = current.right
-        if right.balance in (0, 1):
+        if right.left.depth <= right.right.depth:
+            # right leaning or balanced
             current = current.left_rotate()
-            current.balance -= 1
-            current.right.balance -= 1
-        elif right.balance == -1:
-            right_left_balance = right.left.balance
+
+            current.left.recalculate_depth()
+            current.recalculate_depth()
+        else:
+            # right left leaning
             right.right_rotate()
             current = current.left_rotate()
 
-            current.balance = 0
-
-            # decide where the small subtree goes to
-            if right_left_balance == -1:
-                current.left.balance = 1
-            else:
-                current.left.balance = 0
-            if right_left_balance == 1:
-                current.right.balance = -1
-            else:
-                current.right.balance = 0
+            current.left.recalculate_depth()
+            current.right.recalculate_depth()
+            current.recalculate_depth()
 
         return current
 
-    def balance(self, new_node):
+    def balance(self, node):
         """
-        Balances according to the balances in the tree starting from new_node. 
+        Balances according to the balances in the tree starting from node.
         Since it only fixed -2 and +2, it will only fix where needed
 
-        :param new_node: the node inserted
         :return: the new root of the tree
         """
-        last = new_node
-        current = new_node.parent
+        if node.is_nil():
+            return
+
+        current = node.parent
         while not current.is_nil():
-            if current.balance == -2:
+            if current.left.depth == current.right.depth + 2:
                 # left imbalance
                 current = self.balance_left(current)
-            if current.balance == 2:
+            if current.left.depth == current.right.depth - 2:
                 # right imbalance
                 current = self.balance_right(current)
 
-            last = current
             current = current.parent
 
-        return last
-
-
-    def delete_adjust_balance(self, node):
-        """Adjusts the balance values of all nodes in the tree after a delete
-        
-        :param node: subtree which hight decreased by one"""
-        last = node
-        current = node.parent
-        while not current.is_nil():
-            if current.left == last:
-                # added left
-                current.balance += 1
-                if current.balance == 0:
-                    # height remained
-                    break
-            elif current.right == last:
-                # added right
-                current.balance -= 1
-                if current.balance == 0:
-                    # height remained
-                    break
-
-    def delete(self, root, value):
+    def delete(self, value):
         """Performs a delete of the value from the tree
-
-        :param node: the root of the tree to delete from
         :param value: the value to delete
         :return: the tree with the value deleted"""
 
-        node = self.search(root, value)
+        node = self.search(value)
 
         if node.is_nil():
             raise ValueError(
-                f"Tried to delete value {value} not present in tree {root}"
+                f"Tried to delete value {value} not present in tree {self.algorithm_root}"
             )
 
         if node.left.is_nil():
             removed_in_node = node.parent
-            self.transplant(root, node, node.left)
+            self.transplant(node, node.right)
 
         elif node.right.is_nil():
             removed_in_node = node.parent
-            self.transplant(root, node, node.right)
+            self.transplant(node, node.left)
 
         else:
             min_tree = node.right.min()
             if min_tree != node.right:
-                removed_in_node = node.parent
-                root = self.transplant(root, min_tree, min_tree.right)
+                removed_in_node = min_tree.parent
+                self.transplant(min_tree, min_tree.right)
                 min_tree.right = node.right
                 min_tree.right.parent = min_tree
             else:
-                removed_in_node = min_tree.parent
+                removed_in_node = min_tree
 
-            root = self.transplant(root, node, min_tree)
+            self.transplant(node, min_tree)
+
             min_tree.left = node.left
             min_tree.left.parent = min_tree
 
-        self.delete_adjust_balance(removed_in_node)
+        self.adjust_depth(removed_in_node)
 
-        root = self.balance(removed_in_node)
-
-        return root
+        self.balance(removed_in_node)
 
     def algorithm(self):
         """Generates a tree following the operations
@@ -251,18 +198,18 @@ class AVLTree(BinarySearchTree):
         We use singleton list as tree in order to make a lightweight pointer to the root nodes
 
         :yield: intermediate steps"""
-        root = AVLNil()
+        self.algorithm_root = AVLNil()
 
         for operation in self.operations:
             if operation.is_operation_type(OperationType.INSERT):
-                root = self.insert(root, operation.value)
+                self.insert(operation.value)
             elif operation.is_operation_type(OperationType.DELETE):
-                root = self.delete(root, operation.value)
+                self.delete(operation.value)
             else:
                 raise NotImplementedError(
                     f"Operator {operation.type} not supported by task {self.__class__.__name__}"
                 )
-            yield (root, str(operation))
+            yield (self.algorithm_root, str(operation))
 
 
 task_base.register_task("tree", AVLTree())

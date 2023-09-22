@@ -31,20 +31,22 @@ class BinarySearchTree(Tree):
             "Insert/delete in binary search tree",
         )
 
+        self.algorithm_root = None
+
     def init_tree_argument_parser(self, parser):
         pass
 
     def tree_parse(self, arg_input) -> None:
         pass
 
-    def insert(self, node, value):
+    def insert(self, value):
         """Performs an insert of the value to the tree
 
-        :param node: the root of the tree to insert into
+        :param root: the root of the tree to insert into
         :param value: the value to insert
         :return: the tree with the value inserted
         """
-        current = node
+        current = self.algorithm_root
         parent = NilNode()
 
         while not current.is_nil():
@@ -57,16 +59,15 @@ class BinarySearchTree(Tree):
         new_node = Node(value, parent=parent)
 
         if parent.is_nil():
-            return new_node
+            self.algorithm_root = new_node
+            return
 
         if value < parent.value:
             parent.left = new_node
         else:
             parent.right = new_node
 
-        return node
-
-    def transplant(self, root, node_to, node_from):
+    def transplant(self, node_to, node_from):
         """Transplants node_from into _node_to
 
         :param root: root of the tree
@@ -74,7 +75,7 @@ class BinarySearchTree(Tree):
         :param node_from: the node to insert
         :return: the new root of the tree"""
         if node_to.parent.is_nil():
-            root = node_from
+            self.algorithm_root = node_from
         elif node_to == node_to.parent.left:
             node_to.parent.left = node_from
         else:
@@ -83,15 +84,13 @@ class BinarySearchTree(Tree):
         if not node_from.is_nil():
             node_from.parent = node_to.parent
 
-        return root
-
-    def search(self, root, value):
+    def search(self, value):
         """Searches a value from the tree rooted at root and returns it
 
         :param root: root of the tree
         :param value: value to search for
         :return: node with value"""
-        current = root
+        current = self.algorithm_root
         while not current.is_nil() and value != current.value:
             if value < current.value:
                 current = current.left
@@ -99,37 +98,36 @@ class BinarySearchTree(Tree):
                 current = current.right
         return current
 
-    def delete(self, root, value):
+    def delete(self, value):
         """Performs a delete of the value from the tree
 
-        :param node: the root of the tree to delete from
         :param value: the value to delete
         :return: the tree with the value deleted"""
 
-        node = self.search(root, value)
+        node = self.search(value)
 
         if node.is_nil():
             raise ValueError(
-                f"Tried to delete value {value} not present in tree {root}"
+                f"Tried to delete value {value} not present in tree {self.algorithm_root}"
             )
 
         if node.left.is_nil():
-            return self.transplant(root, node, node.left)
+            self.transplant(node, node.right)
+            return
 
         if node.right.is_nil():
-            return self.transplant(root, node, node.right)
+            self.transplant(node, node.left)
+            return
 
         min_tree = node.right.min()
         if min_tree != node.right:
-            root = self.transplant(root, min_tree, min_tree.right)
+            self.transplant(min_tree, min_tree.right)
             min_tree.right = node.right
             min_tree.right.parent = min_tree
 
-        root = self.transplant(root, node, min_tree)
+        self.transplant(node, min_tree)
         min_tree.left = node.left
         min_tree.left.parent = min_tree
-
-        return root
 
     def algorithm(self):
         """Generates a tree following the operations
@@ -137,18 +135,18 @@ class BinarySearchTree(Tree):
         We use singleton list as tree in order to make a lightweight pointer to the root nodes
 
         :yield: intermediate steps"""
-        root = NilNode()
+        self.algorithm_root = NilNode()
 
         for operation in self.operations:
             if operation.is_operation_type(OperationType.INSERT):
-                root = self.insert(root, operation.value)
+                self.insert(operation.value)
             elif operation.is_operation_type(OperationType.DELETE):
-                root = self.delete(root, operation.value)
+                self.delete(operation.value)
             else:
                 raise NotImplementedError(
                     f"Operator {operation.type} not supported by task {self.__class__.__name__}"
                 )
-            yield (root, str(operation))
+            yield (self.algorithm_root, str(operation))
 
 
 task_base.register_task("tree", BinarySearchTree())

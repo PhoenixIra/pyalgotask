@@ -142,7 +142,9 @@ class Node(BinarySearchTree):
     :ivar parent: the parent node of this node
     :ivar value: the value stored in this node"""
 
-    def __init__(self, value, *, left=None, right=None, parent=None, nil_class = NilNode) -> None:
+    def __init__(
+        self, value, *, left=None, right=None, parent=None, nil_class=NilNode
+    ) -> None:
         """
         Initialized the node as an tree consisting only of this node with the given value.
 
@@ -281,33 +283,42 @@ class Node(BinarySearchTree):
         root_ret = visitor(self)
         return (root_ret, left_ret, right_ret)
 
-class AVLTree(ABC): #pylint: disable=too-few-public-methods
+
+class AVLTree(BinarySearchTree):
     """Abstract class representing nodes of an AVL Tree
-    
-    :ivar balance: the balance of the current Node"""
+
+    :ivar depth: the depth of the current Node"""
 
     @property
     @abstractmethod
-    def balance(self):
-        """:return: the balance of this node"""
+    def depth(self):
+        """:return: the depth of this node"""
 
-    @balance.setter
+    @depth.setter
     @abstractmethod
-    def balance(self, balance):
-        """:ivar balance: the balance to set this node to"""
+    def depth(self, depth):
+        """:ivar depth: the depth to set this node to"""
+
+    @abstractmethod
+    def recalculate_depth(self):
+        """recalculates the depth value of this node based of its children"""
+        self.depth = max(self.left.depth, self.right.depth) + 1
+
 
 class AVLNil(NilNode, AVLTree):
     """Nil node with fixed balancing"""
 
     @property
-    def balance(self):
-        return 0
+    def depth(self):
+        return -1
 
-    @balance.setter
-    def balance(self, balance):
-        raise WrongTreeUsageError(
-            "NilNodes balance cannot be overwritten"
-        )
+    @depth.setter
+    def depth(self, depth):
+        raise WrongTreeUsageError("NilNodes balance cannot be overwritten")
+
+    def recalculate_depth(self):
+        pass
+
 
 class AVLNode(Node, AVLTree):
     """
@@ -319,42 +330,48 @@ class AVLNode(Node, AVLTree):
     :ivar value: the value stored in this node
     :ivar balancing: the balancing value of this node"""
 
-    def __init__(
-        self, value, *, left=None, right=None, parent=None, balance=0
-    ) -> None:
+    def __init__(self, value, *, left=None, right=None, parent=None, depth=0) -> None:
         """
         Initialized the node as an tree consisting only of this node with the given value.
 
         :param value: the value of the node
         """
-        super().__init__(value, left=left, right=right, parent=parent)
+        super().__init__(value, left=left, right=right, parent=parent, nil_class=AVLNil)
 
-        self._balance = balance
+        self._depth = depth
 
     def __repr__(self):
-        return (
-            "["
-            + repr(self.value)
-            + f", b={self._balance}"
-            + repr(self.left)
-            + repr(self.right)
-            + "]"
+        return " ".join(
+            [
+                "[ Node",
+                repr(self.value),
+                f" d={self._depth}",
+                repr(self.left),
+                repr(self.right),
+                "]",
+            ]
         )
 
     def __str__(self):
-        return (
-            "[ Node "
-            + str(self.value)
-            + f", b={self._balance}"
-            + str(self.left)
-            + str(self.right)
-            + "]"
+        return " ".join(
+            [
+                "[ Node",
+                str(self.value),
+                f" d={self._depth}",
+                str(self.left),
+                str(self.right),
+                "]",
+            ]
         )
 
     @property
-    def balance(self):
-        return self._balance
+    def depth(self):
+        return self._depth
 
-    @balance.setter
-    def balance(self, balance):
-        self._balance = balance
+    @depth.setter
+    def depth(self, depth):
+        self._depth = depth
+
+    def recalculate_depth(self):
+        """recalculates the depth value of this node based of its children"""
+        self.depth = max(self.left.depth, self.right.depth) + 1

@@ -74,7 +74,8 @@ class AVLTree(BinarySearchTree):
         self.adjust_depth(new_node.parent)
 
         # rebalance (A7-A9)
-        self.balance(new_node)
+        root = self.balance(new_node)
+        self.algorithm_root = root
 
     def adjust_depth(self, node):
         """adjusts the depth values starting from node
@@ -140,8 +141,9 @@ class AVLTree(BinarySearchTree):
         :return: the new root of the tree
         """
         if node.is_nil():
-            return
+            return node
 
+        child = node
         current = node.parent
         while not current.is_nil():
             if current.left.depth == current.right.depth + 2:
@@ -151,7 +153,10 @@ class AVLTree(BinarySearchTree):
                 # right imbalance
                 current = self.balance_right(current)
 
+            child = current
             current = current.parent
+
+        return child
 
     def delete(self, value):
         """Performs a delete of the value from the tree
@@ -209,7 +214,7 @@ class AVLTree(BinarySearchTree):
                 raise NotImplementedError(
                     f"Operator {operation.type} not supported by task {self.__class__.__name__}"
                 )
-            yield (self.algorithm_root, str(operation))
+            yield (self.algorithm_root, operation)
 
 
 task_base.register_task("tree", AVLTree())

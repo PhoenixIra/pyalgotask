@@ -146,7 +146,7 @@ class BinarySearchTree(Tree):
                 raise NotImplementedError(
                     f"Operator {operation.type} not supported by task {self.__class__.__name__}"
                 )
-            yield (self.algorithm_root, str(operation))
+            yield (self.algorithm_root, operation)
 
 
 task_base.register_task("tree", BinarySearchTree())

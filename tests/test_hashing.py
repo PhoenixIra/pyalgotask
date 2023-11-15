@@ -36,7 +36,7 @@ def div_argument():
 
 def mult_argument():
     """Parameters for multiplication method"""
-    return ["--mult", "0.4", "8"]
+    return ["--mult", "0.125", "8"]
 
 
 def mult_shift_argument():

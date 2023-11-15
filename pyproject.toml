@@ -54,3 +54,4 @@ ignore-docstrings = true
 ignore-imports = true
 ignore-signatures = true
 min-similarity-lines = 12
+max-args=10
